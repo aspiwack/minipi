@@ -36,9 +36,11 @@ and mapu : 'a 'b. ('a -> 'b) -> 'a u -> 'b u = fun f -> function
 
 let return v = Var v
 
+let lift (type a) (u:a t) : a l t = map (fun v -> S v) u
+
 let shift (type a) (type b) (f:a->b t) : a l -> b l t = function
   | Z -> Var Z
-  | S x -> map (fun v -> S v) (f x)
+  | S x -> lift (f x)
 
 let rec (>>=) : 'a 'b. 'a t -> ('a -> 'b t) -> 'b t = fun u s ->
   match u with
@@ -52,3 +54,8 @@ and substu : 'a 'b. 'a u -> ('a -> 'b t) -> 'b u = fun u s ->
   match u with
   | Lam u -> Lam ( substu u (shift s) )
   | Check u -> Check ( u>>=s )
+
+let subst0 (type v) (u:v l t) (a:v t) : v t =
+  u >>= function
+    | Z -> a
+    | S v -> Var v

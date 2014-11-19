@@ -29,3 +29,11 @@ val return : 'a -> 'a t
     substitution. *)
 val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
 val substu : 'a u -> ('a -> 'b t) -> 'b u
+
+(** [lift u] returns [u] in a listed environment (all variable are
+    lifted by [S]). *)
+val lift : 'a t -> 'a l t
+
+(** [subst0 u a] substitutes [a] for the first variable of [u]. It
+    effectively implements beta-reduction. *)
+val subst0 : 'v l t -> 'v t -> 'v t
