@@ -1,0 +1,5 @@
+# ocamlbuid
+_build/*
+
+# emacs
+*~
